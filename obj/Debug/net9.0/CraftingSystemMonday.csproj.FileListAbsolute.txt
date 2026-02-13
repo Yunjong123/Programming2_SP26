@@ -1,0 +1,14 @@
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.AssemblyInfoInputs.cache
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.AssemblyInfo.cs
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.csproj.CoreCompileInputs.cache
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\bin\Debug\net9.0\CraftingSystemMonday.exe
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\bin\Debug\net9.0\CraftingSystemMonday.deps.json
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\bin\Debug\net9.0\CraftingSystemMonday.runtimeconfig.json
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\bin\Debug\net9.0\CraftingSystemMonday.dll
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\bin\Debug\net9.0\CraftingSystemMonday.pdb
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.dll
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\refint\CraftingSystemMonday.dll
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.pdb
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\CraftingSystemMonday.genruntimeconfig.cache
+C:\Users\heo78\dev\playground\school\CraftingSystemMonday\obj\Debug\net9.0\ref\CraftingSystemMonday.dll

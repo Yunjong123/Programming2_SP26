@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using static CraftingSystemMonday.Library;
 
 namespace CraftingSystemMonday
 {
@@ -17,42 +18,45 @@ namespace CraftingSystemMonday
         {
             if (string.IsNullOrWhiteSpace(name)) return null;
 
-            string key = name.Trim().ToLowerInvariant();
-            foreach (Item it in items)
-            {
-                string current = (it.Name ?? "").Trim().ToLowerInvariant();
-                if (current == key) return it;
-            }
+            int index = SearchCollectionByName(name);
+            if (index < 0) return null;
 
-            return null;
+            return items[index];
+        }
+
+        public int SearchCollectionByName(string itemName)
+        {
+            return Library.SearchCollectionByName(items, itemName);
+        }
+
+        public bool SearchCollectionsByName(string itemName, out int index)
+        {
+            return Library.SearchCollectionByName(items, itemName, out index);
         }
 
         public void Add(Item item)
         {
-            if (item == null) return;
-            if (string.IsNullOrWhiteSpace(item.Name)) return;
-            if (item.Amount <= 0) return;
-
-            Item existing = FindByName(item.Name);
-            if (existing == null)
-            {
-                items.Add(item.Clone());
-                return;
-            }
-
-            existing.Amount += item.Amount;
-
-            if (string.IsNullOrWhiteSpace(existing.AmountType)) existing.AmountType = item.AmountType;
-            if (existing.Value <= 0) existing.Value = item.Value;
-            if (string.IsNullOrWhiteSpace(existing.Description)) existing.Description = item.Description;
+            AddToCollectionByName(item);
         }
 
-        public bool Remove(string name, double amount)
+        public void AddToCollectionByName(Item item)
+        {
+            Library.AddToCollectionByName(items, item);
+        }
+
+        public bool RemoveFromCollectionByIndexNumber(int itemIndexNumber)
+        {
+            return Library.RemoveFromCollectionByIndexNumber(items, itemIndexNumber);
+        }
+
+        public bool RemoveByNameAmount(string name, double amount)
         {
             if (amount <= 0) return false;
 
-            Item existing = FindByName(name);
-            if (existing == null) return false;
+            int index = SearchCollectionByName(name);
+            if (index < 0) return false;
+
+            Item existing = items[index];
             if (existing.Amount < amount) return false;
 
             existing.Amount -= amount;
@@ -67,9 +71,26 @@ namespace CraftingSystemMonday
 
         public bool hasEnough(string name, double amount)
         {
-            Item existing = FindByName(name);
-            if (existing == null) return false;
-            return existing.Amount >= amount;
+            int index = SearchCollectionByName(name);
+            if (index < 0) return false;
+
+            return items[index].Amount >= amount;
+        }
+
+        public void PrintAll()
+        {
+            if (Count == 0)
+            {
+                Print("Inventory is empty");
+                return;
+            }
+
+            Print("Inventory:");
+            for (int i = 0; i < items.Count; i++)
+            {
+                Item it = items[i];
+                Print($" {i + 1}. {it.Name} - {it.Amount} {it.AmountType} | each {it.Value.ToString("C")}");
+            }
         }
 
     }

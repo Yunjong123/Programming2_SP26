@@ -11,11 +11,11 @@ namespace CraftingSystemMonday
 
         public List<Recipe> Recipes { get; } = new List<Recipe>();
 
-        private readonly string appTitle = "Awesome Potion Crafitng System";
-        private readonly string creditsLine = "Credits: (edit Program.cs comments)";
+        private readonly string title = "Awesome Potion Crafitng System";
+        private readonly string credits = "Credits: (edit Program.cs comments)";
         public Engine()
         {
-            Recipes.Add(TestData.EngineStartRecipe());
+            SeedTemporaryRecipeForTesting();
         }
         public void Start()
         {
@@ -25,25 +25,21 @@ namespace CraftingSystemMonday
 
         public void Setup()
         {
-            Console.Title = appTitle;
-            Print(appTitle);
-        }
-
-        public void PrintHub()
-        {
+            SetTitle(title);
+            Print(title);
+            Print(credits);
             Print("");
-            Print($"Player: {player.Name}");
-            Print($"Currency: {player.Currency.ToString("C")}");
         }
 
         public void GameLoop()
         {
             while (true)
             {
+                PrintHub();
                 Print("");
                 Print(MenuText());
 
-                int choice = ConvertStringToInteger(GetInput("Enter a number:"));
+                int choice = ConvertStringToInteger(GetInput("Enter a number:"), fallback: -1);
 
                 switch (choice)
                 {
@@ -51,7 +47,7 @@ namespace CraftingSystemMonday
                         Print("Goodbye!");
                         return;
                     case 1:
-                        player.PrintInventory();
+                        player.Inventory.PrintAll();
                         break;
                     case 2:
                         ShowAllRecipes();
@@ -76,7 +72,7 @@ namespace CraftingSystemMonday
                         break;
 
                     case 9:
-                        PrintCredits();
+                        Print(credits);
                         break;
 
                     default:
@@ -87,6 +83,10 @@ namespace CraftingSystemMonday
             }
         }
 
+        public void PrintHub()
+        {
+            Print(player.HubLine());
+        }
         private string MenuText()
         {
             string output = "choose an option:";
@@ -100,15 +100,28 @@ namespace CraftingSystemMonday
             output += "\n8. Remove item from inventory (Optional Challenge)";
             output += "\n9. Credits";
             output += "\n0. Exit";
+            output += $"\n\n{credits}";
             return output;
         }
 
-        private void PrintCredits()
+        private void SeedTemporaryRecipeForTesting()
         {
-            Print("");
-            Print("Credits");
-            Print("This project is based on the Crafting System assignment.");
-            Print("Make sure Program.cs includes your name/ course credits in comments.");
+            Recipes.Clear();
+
+            Recipes.Add(
+                new Recipe(
+                    "Starter Brew",
+                    "Temporary testing recipe. Requirements matchthe starter inventory amounts",
+                    new List<Item>()
+                    {
+                        new Item(){ Name = "Water", Amount = 5, Value = 0.10, Description = "Water", AmountType = "cup(s)" },
+                        new Item(){ Name = "Chamomile", Amount = 3, Value = 0.25, Description = "dried chamomile", AmountType = "tsp(s)" },
+                        new Item(){ Name = "Honey", Amount = 2, Value = 0.40, Description = "honey", AmountType = "tbsp(s)" },
+                    },
+                    outputAmount: 1,
+                    value: 5.00
+                )
+            );
         }
 
         public void ShowAllRecipes()
@@ -120,18 +133,15 @@ namespace CraftingSystemMonday
             }
 
             Print("Available Recipes:");
-            int number = 1;
-            foreach (Recipe recipe in Recipes)
+            for (int i = 0; i < Recipes.Count; i++)
             {
-                Print($" {number}. {recipe.Information()}");
-                number++;
+                Print($" {i + 1}. {Recipes[i].Information()}");
             }
         }
 
         public void RecipeMenu()
         {
             ShowAllRecipes();
-
             int num = ConvertStringToInteger(GetInput("Enter the number of the recipe you would like to view:"));
             if (num >= 1 && num <= Recipes.Count)
             {
@@ -163,7 +173,7 @@ namespace CraftingSystemMonday
 
             foreach (Item req in recipe.RequiredItems)
             {
-                player.Inventory.Remove(req.Name, req.Amount);
+                player.Inventory.RemoveByNameAmount(req.Name, req.Amount);
             }
 
             player.Inventory.Add(recipe.CreateOutputItem());
@@ -194,13 +204,15 @@ namespace CraftingSystemMonday
                 return;
             }
 
-            Item found = player.Inventory.FindByName(name);
-            if (found == null)
+            int index = player.Inventory.SearchCollectionByName(name);
+
+            if (index < 0)
             {
                 Print("No matching item found.");
                 return;
             }
 
+            Item found = player.Inventory.Items()[index];
             Print("Found:");
             Print($" {found.Information()}");
         }
@@ -242,7 +254,7 @@ namespace CraftingSystemMonday
 
             string description = GetInput("Description [optional]:");
 
-            player.Inventory.Add(new Item
+            player.Inventory.AddToCollectionByName(new Item
             {
                 Name = name.Trim(),
                 Amount = amount,
@@ -252,7 +264,7 @@ namespace CraftingSystemMonday
             });
 
             Print("Addded/updated inventory item.");
-            player.PrintInventory();
+            player.Inventory.PrintAll();
         }
 
         private void RemoveItemMenu()
@@ -264,23 +276,22 @@ namespace CraftingSystemMonday
                 return;
             }
 
-            string amountText = GetInput("Amount to remove (number):");
-            double amount = ConvertStringToDouble(amountText, fallback: -1);
-            if (amount <= 0)
+            int index = player.Inventory.SearchCollectionByName(name);
+            if (index < 0)
             {
                 Print("Amount must be a positive number.");
                 return;
             }
 
-            bool ok = player.Inventory.Remove(name, amount);
+            bool ok = player.Inventory.RemoveFromCollectionByIndexNumber(index);
             if (!ok)
             {
-                Print("Remove failed. Check the item name and available amount.");
+                Print("Remove failed.");
                 return;
             }
 
             Print("Removed item amount.");
-            player.PrintInventory();
+            player.Inventory.PrintAll();
         }
     }
 }

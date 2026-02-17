@@ -9,44 +9,36 @@ namespace CraftingSystemMonday
         public string Name { get; protected set; } = "Default Player";
         public double Currency { get; set; } = 25.00;
         public Inventory Inventory { get; } = new Inventory();
-        public Person() { }
 
-        public Person(string name, double currency = 25.00)
+        public Person() : this("Default Person", 25.00) { }
+
+        public Person(string name, double currency)
         {
-            Name = string.IsNullOrWhiteSpace(name) ? "Default Player" : name.Trim();
+            Name = string.IsNullOrWhiteSpace(name) ? "Default Person" : name.Trim();
             Currency = currency;
+
+            SeedTemporaryInventoryForTesting();
         }
 
         public virtual void UpdateName()
         {
             string input = GetInput("Enter a new player name:");
-            if (!string.IsNullOrWhiteSpace(input))
+            if (!String.IsNullOrWhiteSpace(input))
             {
                 Name = input.Trim();
             }
         }
 
-        public string Information()
+        public string HubLine()
         {
-            return $"Player: {Name}\nCurrency: {Currency.ToString("c")}";
+            return $"Player: {Name} | Currency: {Currency.ToString("C")}";
         }
 
-        public void PrintInventory()
+        private void SeedTemporaryInventoryForTesting()
         {
-            if (Inventory.Count == 0)
-            {
-                Print("Inventory is empty");
-                return;
-            }
-
-            Print("Inventory:");
-            int i = 1;
-            foreach (Item item in Inventory.Items())
-            {
-                Print($" {i}. {item.Name} - {item.Amount} {item.AmountType} | each {item.Value.ToString("C")}");
-                i++;
-            }
-
+            Inventory.AddToCollectionByName(new Item { Name = "Water", Amount = 5, AmountType = "cup(s)", Value = 0.10, Description = "water" });
+            Inventory.AddToCollectionByName(new Item { Name = "Chamomile", Amount = 3, AmountType = "tsp(s)", Value = 0.25, Description = "dried chamomile" });
+            Inventory.AddToCollectionByName(new Item { Name = "Honey", Amount = 2, AmountType = "tbsp(s)", Value = 0.25, Description = "honey" });
         }
     }
 }

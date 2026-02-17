@@ -11,8 +11,12 @@ namespace CraftingSystemMonday
 
         public List<Recipe> Recipes { get; } = new List<Recipe>();
 
-        private string name = "Awesome Potion Crafitng System";
-
+        private readonly string appTitle = "Awesome Potion Crafitng System";
+        private readonly string creditsLine = "Credits: (edit Program.cs comments)";
+        public Engine()
+        {
+            Recipes.Add(TestData.EngineStartRecipe());
+        }
         public void Start()
         {
             Setup();
@@ -21,42 +25,15 @@ namespace CraftingSystemMonday
 
         public void Setup()
         {
-            Recipes.Clear();
+            Console.Title = appTitle;
+            Print(appTitle);
+        }
 
-            Recipes.Add(
-                new Recipe(
-                    "Chamoile Tea",
-                    "A calming tea brewed from chamomile and hot water",
-                    new List<Item>()
-                    {
-                        new Item() {Name = "Water", Amount = 1, Value = 0.10, Description = "water", AmountType = "cup(s)" },
-                        new Item(){ Name= "Chamomile", Amount = 1, Value = 0.25, Description = "Matricaria, recutita, dried", AmountType = "tstp(s)" },
-                    },
-                    outputAmount: 1,
-                    value: 1.50
-                )
-            );
-
-            Recipes.Add(
-                new Recipe(
-                    "Honey Tea",
-                    "Hot warer + honey",
-                    new List<Item>()
-                    {
-                        new Item(){ Name="Water", Amount = 1, Value = 0.10, Description="water", AmountType = "cup(s)"},
-                        new Item(){ Name="Honey", Amount = 1, Value =0.40, Description="Honey",AmountType = "tbsp(s)" },
-                    },
-                    outputAmount: 1,
-                    value: 2.00
-                )
-            );
-
-            player.Inventory.Add(new Item { Name = "Water", Amount = 5, AmountType = "cup(s)", Value = 0.10, Description = "water" });
-            player.Inventory.Add(new Item { Name = "Chamomile", Amount = 3, AmountType = "ts[(s)", Value = 0.25, Description = "dried chamomile" });
-            player.Inventory.Add(new Item { Name = "Honey", Amount = 2, AmountType = "tbsp(s)", Value = 0.40, Description = "honey" });
-
-            Print(name);
-            Print(player.Information());
+        public void PrintHub()
+        {
+            Print("");
+            Print($"Player: {player.Name}");
+            Print($"Currency: {player.Currency.ToString("C")}");
         }
 
         public void GameLoop()
@@ -97,6 +74,11 @@ namespace CraftingSystemMonday
                     case 8:
                         RemoveItemMenu();
                         break;
+
+                    case 9:
+                        PrintCredits();
+                        break;
+
                     default:
                         Print("Please enter a valid menu option.");
                         break;
@@ -116,8 +98,17 @@ namespace CraftingSystemMonday
             output += "\n6. Search inventory (Optional Challenge)";
             output += "\n7. Add item to inventory (Optional Challenge)";
             output += "\n8. Remove item from inventory (Optional Challenge)";
+            output += "\n9. Credits";
             output += "\n0. Exit";
             return output;
+        }
+
+        private void PrintCredits()
+        {
+            Print("");
+            Print("Credits");
+            Print("This project is based on the Crafting System assignment.");
+            Print("Make sure Program.cs includes your name/ course credits in comments.");
         }
 
         public void ShowAllRecipes()

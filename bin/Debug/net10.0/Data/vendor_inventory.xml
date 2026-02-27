@@ -1,0 +1,5 @@
+<Inventory owner="Vendor">
+    <Item name="Water" description="water" amount="50" amountType="cup(s)" value="0.10" />
+    <Item name="Chamomile" description="dried chamomile" amount="50" amountType="tsp(s)" value="0.25" />
+    <Item name="Honey" description="honey" amount="50" amountType="tbsp(s)" value="0.40" />
+</Inventory>

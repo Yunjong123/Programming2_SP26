@@ -2,14 +2,13 @@
 {
     internal class Program
     {
-        //Credits:
-        //Students: Heo
-        //Course: Programming II
-        //Assignment: Craft VersionII
+        // Credits: 
+        // Student: 
+        // Course: Programming II
+        // Assignment: Craft Version II
         static void Main()
         {
             new Engine().Start();
         }
     }
-
 }

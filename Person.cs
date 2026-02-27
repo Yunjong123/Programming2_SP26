@@ -6,39 +6,48 @@ namespace CraftingSystemMonday
 {
     public class Person
     {
-        public string Name { get; protected set; } = "Default Player";
+        public string Name { get; protected set; } = "Default";
         public double Currency { get; set; } = 25.00;
+
         public Inventory Inventory { get; } = new Inventory();
 
-        public Person() : this("Default Person", 25.00) { }
+        public Person() { }
 
         public Person(string name, double currency)
         {
-            Name = string.IsNullOrWhiteSpace(name) ? "Default Person" : name.Trim();
+            Name = string.IsNullOrWhiteSpace(name) ? "Default" : name.Trim();
             Currency = currency;
-
-            SeedTemporaryInventoryForTesting();
         }
 
         public virtual void UpdateName()
         {
-            string input = GetInput("Enter a new player name:");
-            if (!String.IsNullOrWhiteSpace(input))
+            string input = GetInput("Enter a new name:");
+            if (!string.IsNullOrWhiteSpace(input))
             {
                 Name = input.Trim();
             }
         }
 
-        public string HubLine()
+        public string Information()
         {
-            return $"Player: {Name} | Currency: {Currency.ToString("C")}";
+            return $"Name: {Name}\nCurrency: {Currency.ToString("C")}";
         }
 
-        private void SeedTemporaryInventoryForTesting()
+        public void PrintInventory()
         {
-            Inventory.AddToCollectionByName(new Item { Name = "Water", Amount = 5, AmountType = "cup(s)", Value = 0.10, Description = "water" });
-            Inventory.AddToCollectionByName(new Item { Name = "Chamomile", Amount = 3, AmountType = "tsp(s)", Value = 0.25, Description = "dried chamomile" });
-            Inventory.AddToCollectionByName(new Item { Name = "Honey", Amount = 2, AmountType = "tbsp(s)", Value = 0.25, Description = "honey" });
+            if (Inventory.Count == 0)
+            {
+                Print("Inventory is epmty.");
+                return;
+            }
+
+            Print("Inventory:");
+            var list = Inventory.Items();
+            for (int i = 0; i < list.Count; i++)
+            {
+                Item it = list[i];
+                Print($"  {i + 1}: {it.Name} - {it.Amount} {it.AmountType} | each {it.Value.ToString("C")}");
+            }
         }
     }
 }

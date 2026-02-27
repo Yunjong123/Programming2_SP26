@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices.Marshalling;
 using static CraftingSystemMonday.Library;
 
 namespace CraftingSystemMonday
@@ -14,84 +15,121 @@ namespace CraftingSystemMonday
             return new List<Item>(items);
         }
 
-        public Item FindByName(string name)
+        private static string Key(string s)
         {
-            if (string.IsNullOrWhiteSpace(name)) return null;
-
-            int index = SearchCollectionByName(name);
-            if (index < 0) return null;
-
-            return items[index];
+            return (s ?? "").Trim().ToLowerInvariant();
         }
 
         public int SearchCollectionByName(string itemName)
         {
-            return Library.SearchCollectionByName(items, itemName);
+            string k = Key(itemName);
+            if (k.Length == 0) return -1;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (Key(items[i].Name) == k) return i;
+            }
+            return -1;
         }
 
-        public bool SearchCollectionsByName(string itemName, out int index)
+        public bool Contains(string itemName)
         {
-            return Library.SearchCollectionByName(items, itemName, out index);
+            return SearchCollectionByName(itemName) >= 0;
         }
 
-        public void Add(Item item)
+        public double AmountOf(string itemName)
         {
-            AddToCollectionByName(item);
+            int idx = SearchCollectionByName(itemName);
+            if (idx < 0) return 0.0;
+            return items[idx].Amount;
+        }
+
+        public Item FindByName(string itemName)
+        {
+            int idx = SearchCollectionByName(itemName);
+            if (idx < 0) return null;
+            return items[idx];
         }
 
         public void AddToCollectionByName(Item item)
         {
-            Library.AddToCollectionByName(items, item);
+            if (item == null) return;
+            if (string.IsNullOrWhiteSpace(item.Name)) return;
+            if (item.Amount <= 0) return;
+
+            int idx = SearchCollectionByName(item.Name);
+            if (idx < 0)
+            {
+                items.Add(item.Clone());
+                return;
+            }
+
+            items[idx].Amount += item.Amount;
+
+            if (string.IsNullOrWhiteSpace(items[idx].AmountType)) items[idx].AmountType = item.AmountType;
+            if (items[idx].Value <= 0) items[idx].Value = item.Value;
+            if (string.IsNullOrWhiteSpace(items[idx].Description)) items[idx].Description = item.Description;
         }
 
         public bool RemoveFromCollectionByIndexNumber(int itemIndexNumber)
         {
-            return Library.RemoveFromCollectionByIndexNumber(items, itemIndexNumber);
-        }
-
-        public bool RemoveByNameAmount(string name, double amount)
-        {
-            if (amount <= 0) return false;
-
-            int index = SearchCollectionByName(name);
-            if (index < 0) return false;
-
-            Item existing = items[index];
-            if (existing.Amount < amount) return false;
-
-            existing.Amount -= amount;
-
-            if (existing.Amount <= 0)
-            {
-                items.Remove(existing);
-            }
-
+            if (itemIndexNumber < 0 || itemIndexNumber >= items.Count) return false;
+            items.RemoveAt(itemIndexNumber);
             return true;
         }
 
-        public bool hasEnough(string name, double amount)
+        public bool RemoveAmountByName(string itemName, double amount)
         {
-            int index = SearchCollectionByName(name);
-            if (index < 0) return false;
+            if (amount <= 0) return false;
 
-            return items[index].Amount >= amount;
+            int idx = SearchCollectionByName(itemName);
+            if (idx < 0) return false;
+
+            if (items[idx].Amount < amount) return false;
+
+            items[idx].Amount -= amount;
+            if (items[idx].Amount <= 0)
+            {
+                items.RemoveAt(idx);
+            }
+            return true;
         }
 
-        public void PrintAll()
+        public bool ChangeAmountByName(string itemName, double delta)
         {
-            if (Count == 0)
+            if (string.IsNullOrWhiteSpace(itemName)) return false;
+            if (delta == 0) return true;
+
+            int idx = SearchCollectionByName(itemName);
+
+            if (idx < 0)
             {
-                Print("Inventory is empty");
-                return;
+                if (delta <= 0) return false;
+
+                items.Add(new Item
+                {
+                    Name = itemName.Trim(),
+                    Amount = delta,
+                    AmountType = "unit(s)",
+                    Value = 0.0,
+                    Description = ""
+                });
+                return true;
             }
 
-            Print("Inventory:");
-            for (int i = 0; i < items.Count; i++)
+            items[idx].Amount += delta;
+            if (items[idx].Amount <= 0)
             {
-                Item it = items[i];
-                Print($" {i + 1}. {it.Name} - {it.Amount} {it.AmountType} | each {it.Value.ToString("C")}");
+                items.RemoveAt(idx);
             }
+            return true;
         }
 
+        public bool HasEnough(string itemName, double amount)
+        {
+            int idx = SearchCollectionByName(itemName);
+            if (idx < 0) return false;
+            return items[idx].Amount >= amount;
+        }
     }
 }

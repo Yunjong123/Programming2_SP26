@@ -1,37 +1,28 @@
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace CraftingSystemMonday
 {
     public class Recipe
     {
         public string Name { get; set; } = "Unnamed Recipe";
-
         public string Description { get; set; } = "";
 
         public List<Item> RequiredItems { get; set; } = new List<Item>();
 
         public double OutputAmount { get; set; } = 1.0;
-        public double Value { get; set; } = 0.0;
 
-        public Recipe() { }
-
-        public Recipe(String name, string description, List<Item> requiredItems, double outputAmount = 1.0, double value = 0.0)
-        {
-            Name = name;
-            Description = description;
-            RequiredItems = requiredItems ?? new List<Item>();
-            OutputAmount = outputAmount;
-            Value = Value;
-        }
+        public string OutputAmountType { get; set; } = "unit(s)";
+        public double OutputValueEach { get; set; } = 0.0;
 
         public string Information()
         {
-            return $"{Name} (Makes {OutputAmount}, Value {Value.ToString("C")})";
+            return $"{Name} (Makes {OutputAmount} {OutputAmountType})";
         }
 
         public string Details()
         {
-            string text = $"{Name}\n{Description}\nMakes: {OutputAmount}\nValue: {Value.ToString("C")}\nRequired:";
+            string text = $"{Name}\n{Description}\nMakes: {OutputAmount} {OutputAmountType}\nValue (each): {OutputValueEach.ToString("C")}\nRequired:";
             if (RequiredItems == null || RequiredItems.Count == 0)
             {
                 return text + "\n (none)";
@@ -52,8 +43,8 @@ namespace CraftingSystemMonday
                 Name = Name,
                 Description = Description,
                 Amount = OutputAmount,
-                AmountType = "unit(s)",
-                Value = Value
+                AmountType = OutputAmountType,
+                Value = OutputValueEach
             };
         }
     }

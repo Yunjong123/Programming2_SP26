@@ -1,0 +1,2 @@
+Menu options allow you to view inventory, view recipes, craft items, trade with a vendor, and export progress.
+Edit the files in the Data folder to change the app's content without changing code.

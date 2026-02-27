@@ -1,0 +1,17 @@
+<Recipes>
+    <Recipe name="Chamomile Tea" description="A calming tea brewed from chamomile and hot water."
+            outputAmount="1" outputAmountType="cup(s)" outputValueEach="1.50">
+        <Requirements>
+            <Item name="Water" description="water" amount="1" amountType="cup(s)" value="0.10" />
+            <Item name="Chamomile" description="dried chamomile" amount="1" amountType="tsp(s)" value="0.25" />
+        </Requirements>
+    </Recipe>
+    
+    <Recipe name="Honey Tea" description="Hot water + honey."
+            outputAmount="1" outputAmountType="cup(s)" outputValueEach="2.00">
+        <Requirements>
+            <Item name="Water" description="water" amount="1" amountType="cup(s)" value="0.10" />
+            <Item name="Honey" description="honey" amount="1" amountType="tbsp(s)" value="0.40" />
+        </Requirements>
+    </Recipe>
+</Recipes>

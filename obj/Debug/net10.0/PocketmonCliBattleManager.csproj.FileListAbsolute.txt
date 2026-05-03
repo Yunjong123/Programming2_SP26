@@ -1,0 +1,14 @@
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.AssemblyInfoInputs.cache
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.AssemblyInfo.cs
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.csproj.CoreCompileInputs.cache
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\bin\Debug\net10.0\PocketmonCliBattleManager.exe
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\bin\Debug\net10.0\PocketmonCliBattleManager.deps.json
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\bin\Debug\net10.0\PocketmonCliBattleManager.runtimeconfig.json
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\bin\Debug\net10.0\PocketmonCliBattleManager.dll
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\bin\Debug\net10.0\PocketmonCliBattleManager.pdb
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.dll
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\refint\PocketmonCliBattleManager.dll
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.pdb
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\PocketmonCliBattleManager.genruntimeconfig.cache
+C:\Users\heo78\dev\playground\school\PocketmonCliBattleManager\obj\Debug\net10.0\ref\PocketmonCliBattleManager.dll
